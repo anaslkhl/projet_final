@@ -2,6 +2,17 @@
 #define nsize 10
 #define esize 20
 #define produc 100
+
+#define RST   "\033[0m"
+#define BOLD  "\033[1m"
+#define RED   "\033[31m"
+#define GRN   "\033[32m"
+#define YEL   "\033[33m"
+#define BLU   "\033[34m"
+#define MAG   "\033[35m"
+#define CYN   "\033[36m"
+#define WHT   "\033[37m"
+
 typedef struct 
 {
     int idClient;
@@ -42,16 +53,44 @@ char *my_strcat(char *s1, char *s2)
         i++;
         x++;
     }
+    s1[i] = '\0';
     return(s1);
 }
 char *my_strcpy(char *s1, char *s2)
 {
     char *save = s1;
     while(*s1++ = *s2++);
-    *s1 = '\0';
     return (save);
 }
+int my_strcmp(char s1[],char s2[])
+{
+    int i = 0;
+    while (s1[i] && s2[i] && s1[i] == s2[i])
+    {
+        i++;
+    }
+    return((unsigned char)s1[i] - (unsigned char )s2[i]);
+}
+int find_product(Product pp[], char iname[],int counter)
+{
+    for (int x = 0;x<counter;x++){
+        if (my_strcmp(pp[x].nameOP,iname) == 0){
+            return(x);
+        }
+    }
+    return(-1);
+}
 
+void sort_by_price(Product p[], int nb)
+{
+    for (int i = 0; i < nb - 1; ++i)
+        for (int j = 0; j < nb - i - 1; ++j)
+            if (p[j].prix > p[j + 1].prix) {
+                Product tmp = p[j];
+                p[j]      = p[j + 1];
+                p[j + 1]  = tmp;
+            }
+}
 int main()
 {
     Client c1;
@@ -62,6 +101,7 @@ int main()
     my_strcat(c1.email,".");
     my_strcat(c1.email,c1.lastName);
     my_strcat(c1.email,"@gmail.com");
+    c1.solde = 0;
 
     Product p[produc];
     p[0].idProduct = 1;
@@ -136,21 +176,171 @@ int main()
 
 
     int choice;
+    int profile;
+    int balance;
+    int balan;
+    int prod;
+    char prosear[nsize];
+    int proind;
+    int sizepro = 10;
+    int chosenpro = 0;
+    int idbuy;
+    float totalearned = 0;
+    int totalsells = 0;
+    c1.solde = 0;
+
 
     do
     {
-        printf("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
-        printf("============= Menu ================\n");
-        printf("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n");
-        printf(" * 1.~ -- Gestion du profil client\n");
-        printf(" * 2.~ -- Gestion du solde virtuel\n");
-        printf(" * 3.~ -- Consultation des produits\n");
-        printf(" * 4.~ -- Effectuer un achat\n");
-        printf(" * 5.~ --  Mes statistiques\n");
-        printf(" * 0.~ -- Quitter l'application\n\n");
-        printf("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n");
-        printf(" === Enter a choice ===> : ");
+        printf(CYN "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n" RST);
+        printf(YEL "============= Menu ================\n" RST);
+        printf(CYN "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n" RST);
+        printf(GRN " * 1.~ -- Customer profile management\n" RST);
+        printf(GRN " * 2.~ -- Virtual balance management\n" RST);
+        printf(GRN " * 3.~ -- Product consultation\n" RST);
+        printf(GRN " * 4.~ -- Make a purchase\n" RST);
+        printf(GRN " * 5.~ --  The statistics\n" RST);
+        printf(RED " * 0.~ -- Quitter l'application\n\n" RST);
+        printf(CYN "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n" RST);
+        printf(BLU " === Enter a choice ===> : " RST);
         scanf("%d",&choice);
+        switch (choice)
+        {
+        case 1:
+            printf("----- Customer profile management -----\n\n");
+            printf("=> 1-  Show information of client\n");
+            printf("=> 2-  Editing profile\n");
+            printf("=> 3-  Add solde for this client\n\n");
+
+            printf("---> enter a choice : ");
+            scanf("%d",&profile);
+            if (profile == 1){
+                printf("\t=== Client Profile ===\n");
+                printf ("|ID : %d | %s | | %s |  | %s |  | %d | ",c1.idClient,c1.name,c1.lastName,c1.email,c1.solde);
+                break;
+            }
+            else if (profile == 2){
+                printf("\t#### Editing the profile ###\n");
+                printf(" *---* Enter the ID of the client : ");
+                scanf("%d",&c1.idClient);
+                printf(" *---* Enter the name of the client : ");
+                scanf("%s",c1.name);
+                printf(" *---* Enter the last name of the client : ");
+                scanf("%s",c1.lastName);
+                my_strcpy(c1.email,c1.name);
+                my_strcat(c1.email,".");
+                my_strcat(c1.email,c1.lastName);
+                my_strcat(c1.email,"@gmail.com");
+            }
+            else{
+                printf (" ! Please enter a valid choice !\n");
+                break;
+            }
+            
+            break;
+        case 2:
+            printf("  ----- Virtual balance management -----\n");
+            printf("=> 1-  Show the balance\n");
+            printf("=> 2-  Add money to the balance\n");
+            printf(" ---- Enter a choice --> : ");
+            scanf("%d",&balan);
+            if(balan == 1){
+                printf("==== Balance of the clinet is : %dMAD\n",c1.solde);
+            }
+            else if(balan == 2){
+                printf(">>>> Add balance to the client account --> : ");
+                scanf("%d",&balance);
+                c1.solde += balance;
+                printf("  <<< Your balance added succesfully >>>\n");
+                printf("  $$$$  Your balance now is --> : %dMAD  $$$$\n",c1.solde);
+            }
+            break;
+        case 3:
+            printf("*---- Product consultation ----*\n");
+            printf("=-= 1. - Catalog display\n");   
+            printf("=-= 2. - Product search\n");
+            printf("=-= 3. - Product sorting by price\n");
+            printf("=-= 4. - Show all product details\n");
+            printf("===> Enter a choice - : ");
+            scanf("%d",&prod);
+            switch (prod)
+            {
+            case 1:
+                printf("==== The catalog of product ====\n\n");
+                for(int i = 0;i<10;i++){
+                    printf("|name : %s | |prix : %f | |stock : %d | \n",p[i].nameOP,p[i].prix,p[i].stock);
+                }
+                break;
+            case 2:
+                printf("   ===== Search for a product =====\n");
+                printf("---> Enter the name of the product to search for : ");
+                scanf("%s",prosear);
+                int found = find_product(p,prosear,10);
+                printf(" | ID | | Name | | Price |\n");
+                printf(" | %d | | %s | | %f | \n",p[found].idProduct,p[found].nameOP,p[found].prix);
+                break;
+            case 3:
+                printf("  **** Sorting products by the price ****\n");
+                sort_by_price(p,sizepro);
+                printf(" | ID | | Name | | Price | | Stock |\n");
+                for(int i = 0;i<sizepro;i++){
+                    printf(" | %d | | %s | | %f | | %d | \n",p[i].idProduct,p[i].nameOP,p[i].prix,p[i].stock);
+                }
+                break;
+            case 4:
+                printf("  ====== Product by ID ========\n");
+                printf(" | ID | | Name | | Price | | Stock |\n");
+                for(int i = 0;i<sizepro;i++){
+                    printf(" | %d | |name : %s | |prix : %f | |stock : %d | \n",p[i].idProduct,p[i].nameOP,p[i].prix,p[i].stock);
+                }
+                printf("--->> Enter the product ID you want --> : ");
+                scanf("%d",&chosenpro);
+                chosenpro -= 1;
+                printf(" | ID | | Name | | Price | | Stock | | Category | | Description |\n");
+                printf(" [ %d ] | %s | | %f | | %d | ",p[chosenpro].idProduct,p[chosenpro].nameOP,p[chosenpro].prix,p[chosenpro].stock);
+                printf("| %s | | %s | \n",p[chosenpro].category,p[chosenpro].description);
+
+                break;
+
+            default:
+                break;
+            }
+            break;
+        case 4:
+            printf("*=========*  Make a purchase *=========*\n");
+            for(int i = 0;i<sizepro;i++){
+                    printf(" | ID | | Name | | Price | | Stock | | Category | | Description |\n");
+                    printf(" [ %d ] | %s | | %f | | %d | ",p[i].idProduct,p[i].nameOP,p[i].prix,p[i].stock);
+                }
+                printf(">>>> Buy the product of ID --> : ");
+                scanf("%d",&idbuy);
+                if (p[idbuy].stock == 0){
+                    printf("**** This product is out of stock !\n");
+                    break;
+                }
+                if (c1.solde < p[idbuy].prix){
+                    printf(">>>>> You don't have enough money to buy this product ! <<<<<\n");\
+                    break;
+                }
+                else{
+                    p[idbuy].stock--;
+                    c1.solde -= (int)p[idbuy].prix;
+                    totalearned += p[idbuy].prix;
+                    totalsells++;
+                    printf("  <<<< The purchase was succesfully for that product >>>>\n\n");
+                    printf("-=--=- The stock of the product now is => :  %d \n",p[idbuy].stock);
+                    printf("-=--=- And your current solde is --> : %d \n",c1.solde);
+                    break;
+                }
+                break;
+            case 5:
+                printf("   ======= The statistics ========\n");
+                printf("^^^^^ Total earned is ---> : %fMAD\n",totalearned);
+                printf("^^^^^ Total sells is ---> : %d\n",totalsells);
+                break;
+            default:
+            break;
+        }
     } while (choice != 0);
-    
+    printf (RED "\n  >>>>>>>> EXITING THE APPLICATION <<<<<<<<<\n\n" RST);
 }
