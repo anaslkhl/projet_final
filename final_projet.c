@@ -2,6 +2,7 @@
 #define nsize 10
 #define esize 20
 #define produc 100
+#define email_size 30
 
 #define RST   "\033[0m"
 #define BOLD  "\033[1m"
@@ -12,13 +13,24 @@
 #define MAG   "\033[35m"
 #define CYN   "\033[36m"
 #define WHT   "\033[37m"
+#define BYEL "\e[1;33m"
+#define UCYN "\e[4;36m"
+#define BGRN "\e[1;32m"
+#define BMAG "\e[1;35m"
+#define BBLU "\e[1;34m"
+#define BCYN "\e[1;36m"
+#define BRED "\e[1;31m"
+
+
+
+
 
 typedef struct 
 {
     int idClient;
     char name[nsize];
     char lastName[nsize];
-    char email[esize];
+    char email[email_size];
     int solde;    
 }Client;
 
@@ -177,7 +189,7 @@ int main()
 
     int choice;
     int profile;
-    int balance;
+    int balance = 0;
     int balan;
     int prod;
     char prosear[nsize];
@@ -188,44 +200,45 @@ int main()
     float totalearned = 0;
     int totalsells = 0;
     c1.solde = 0;
+    int totpro = 0;
+    int so;
 
 
     do
     {
-        printf(CYN "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n" RST);
-        printf(YEL "============= Menu ================\n" RST);
-        printf(CYN "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n" RST);
-        printf(GRN " * 1.~ -- Customer profile management\n" RST);
-        printf(GRN " * 2.~ -- Virtual balance management\n" RST);
-        printf(GRN " * 3.~ -- Product consultation\n" RST);
-        printf(GRN " * 4.~ -- Make a purchase\n" RST);
-        printf(GRN " * 5.~ --  The statistics\n" RST);
-        printf(RED " * 0.~ -- Quitter l'application\n\n" RST);
+        printf(UCYN "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n" RST);
+        printf(BYEL "============= Menu ================\n" RST);
+        printf(UCYN "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n" RST);
+        printf(YEL " * 1.~ -- Customer profile management\n" RST);
+        printf(YEL " * 2.~ -- Virtual balance management\n" RST);
+        printf(YEL " * 3.~ -- Product consultation\n" RST);
+        printf(YEL " * 4.~ -- Make a purchase\n" RST);
+        printf(YEL " * 5.~ --  The statistics\n" RST);
+        printf(RED " * 0.~ -- Exit application\n\n" RST);
         printf(CYN "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n" RST);
         printf(BLU " === Enter a choice ===> : " RST);
         scanf("%d",&choice);
         switch (choice)
         {
         case 1:
-            printf("----- Customer profile management -----\n\n");
-            printf("=> 1-  Show information of client\n");
-            printf("=> 2-  Editing profile\n");
-            printf("=> 3-  Add solde for this client\n\n");
+            printf(BCYN "----- Customer profile management -----\n\n" RST);
+            printf(MAG "=> 1-  Show information of client\n" RST);
+            printf(MAG "=> 2-  Editing profile\n" RST);
 
-            printf("---> enter a choice : ");
+            printf(CYN "\n---> enter a choice : " RST);
             scanf("%d",&profile);
             if (profile == 1){
-                printf("\t=== Client Profile ===\n");
-                printf ("|ID : %d | %s | | %s |  | %s |  | %d | ",c1.idClient,c1.name,c1.lastName,c1.email,c1.solde);
+                printf(UCYN "\n\t=== Client Profile ===\n" RST);
+                printf (BOLD "\n|ID : %d | %s | | %s |  | %s |  | %d | " RST,c1.idClient,c1.name,c1.lastName,c1.email,c1.solde);
                 break;
             }
             else if (profile == 2){
-                printf("\t#### Editing the profile ###\n");
-                printf(" *---* Enter the ID of the client : ");
+                printf(BBLU "\t#### Editing the profile ####\n" RST);
+                printf(CYN "\n *---* Enter the ID of the client : " RST);
                 scanf("%d",&c1.idClient);
-                printf(" *---* Enter the name of the client : ");
+                printf(CYN " *---* Enter the name of the client : "RST);
                 scanf("%s",c1.name);
-                printf(" *---* Enter the last name of the client : ");
+                printf(CYN " *---* Enter the last name of the client : "RST);
                 scanf("%s",c1.lastName);
                 my_strcpy(c1.email,c1.name);
                 my_strcat(c1.email,".");
@@ -233,114 +246,140 @@ int main()
                 my_strcat(c1.email,"@gmail.com");
             }
             else{
-                printf (" ! Please enter a valid choice !\n");
+                printf (RED "\n ! Please enter a valid choice !\n" RST);
                 break;
             }
             
             break;
         case 2:
-            printf("  ----- Virtual balance management -----\n");
-            printf("=> 1-  Show the balance\n");
-            printf("=> 2-  Add money to the balance\n");
-            printf(" ---- Enter a choice --> : ");
+            printf(BGRN "  ----- Virtual balance management -----\n\n" RST);
+            printf(YEL "=> 1-  Show the balance\n" RST);
+            printf(YEL "=> 2-  Add money to the balance\n"RST);
+            printf(CYN "\n ---- Enter a choice --> : " RST);
             scanf("%d",&balan);
             if(balan == 1){
-                printf("==== Balance of the clinet is : %dMAD\n",c1.solde);
+                printf(BMAG "==== Balance of the clinet is : %dMAD\n" RST,c1.solde);
             }
             else if(balan == 2){
-                printf(">>>> Add balance to the client account --> : ");
+                printf(CYN "\n>>>> Add balance to the client account --> : " RST);
                 scanf("%d",&balance);
                 c1.solde += balance;
-                printf("  <<< Your balance added succesfully >>>\n");
-                printf("  $$$$  Your balance now is --> : %dMAD  $$$$\n",c1.solde);
+                printf(GRN "\n  <<< Your balance added succesfully >>>\n" RST);
+                printf(CYN "\n  $$$$  Your balance now is --> : %dMAD  $$$$\n" RST,c1.solde);
             }
             break;
         case 3:
-            printf("*---- Product consultation ----*\n");
-            printf("=-= 1. - Catalog display\n");   
-            printf("=-= 2. - Product search\n");
-            printf("=-= 3. - Product sorting by price\n");
-            printf("=-= 4. - Show all product details\n");
-            printf("===> Enter a choice - : ");
-            scanf("%d",&prod);
-            switch (prod)
+            do
             {
-            case 1:
-                printf("==== The catalog of product ====\n\n");
-                for(int i = 0;i<10;i++){
-                    printf("|name : %s | |prix : %f | |stock : %d | \n",p[i].nameOP,p[i].prix,p[i].stock);
-                }
-                break;
-            case 2:
-                printf("   ===== Search for a product =====\n");
-                printf("---> Enter the name of the product to search for : ");
-                scanf("%s",prosear);
-                int found = find_product(p,prosear,10);
-                printf(" | ID | | Name | | Price |\n");
-                printf(" | %d | | %s | | %f | \n",p[found].idProduct,p[found].nameOP,p[found].prix);
-                break;
-            case 3:
-                printf("  **** Sorting products by the price ****\n");
-                sort_by_price(p,sizepro);
-                printf(" | ID | | Name | | Price | | Stock |\n");
-                for(int i = 0;i<sizepro;i++){
-                    printf(" | %d | | %s | | %f | | %d | \n",p[i].idProduct,p[i].nameOP,p[i].prix,p[i].stock);
-                }
-                break;
-            case 4:
-                printf("  ====== Product by ID ========\n");
-                printf(" | ID | | Name | | Price | | Stock |\n");
-                for(int i = 0;i<sizepro;i++){
-                    printf(" | %d | |name : %s | |prix : %f | |stock : %d | \n",p[i].idProduct,p[i].nameOP,p[i].prix,p[i].stock);
-                }
-                printf("--->> Enter the product ID you want --> : ");
-                scanf("%d",&chosenpro);
-                chosenpro -= 1;
-                printf(" | ID | | Name | | Price | | Stock | | Category | | Description |\n");
-                printf(" [ %d ] | %s | | %f | | %d | ",p[chosenpro].idProduct,p[chosenpro].nameOP,p[chosenpro].prix,p[chosenpro].stock);
-                printf("| %s | | %s | \n",p[chosenpro].category,p[chosenpro].description);
+                printf(BYEL "\n*---- Product consultation ----*\n\n" RST);
+                printf(CYN "=-= 1. - Catalog display\n" RST);   
+                printf(CYN "=-= 2. - Product search\n" RST);
+                printf(CYN "=-= 3. - Product sorting by price\n" RST);
+                printf(CYN "=-= 4. - Show all product details\n" RST);
+                printf(CYN "=-= 0. - Menu principale\n" RST);
+                printf(BLU "\n===> Enter a choice - : " RST);
+                scanf("%d",&prod);
+                switch (prod)
+                {
+                case 1:
+                    printf(BMAG "   ======= The catalog of product =======\n\n" RST);
+                    printf(CYN "\n|  name  |  |  prix  |  |  stock  |\n" RST);
+                    for(int i = 0;i<10;i++){
+                        printf(BOLD "| %s | | %.2f | | %d | \n" RST,p[i].nameOP,p[i].prix,p[i].stock);
+                    }
+                    break;
+                case 2:
+                    printf(BYEL "   ===== Search for a product =====\n" RST);
+                    printf(CYN "\n---> Enter the name of the product to search for : " RST);
+                    scanf("%s",prosear);
+                    int found = find_product(p,prosear,10);
+                    printf(GRN "\n | ID |    | Name |    | Price |\n" RST);
+                    printf(BOLD " | %d | | %s | | %f | \n" RST,p[found].idProduct,p[found].nameOP,p[found].prix);
+                    break;
+                case 3:
 
+                    printf (MAG "\n 1- > Ascending order \n" RST);
+                    printf(MAG " 2- > Descending order \n\n" RST);
+                    printf(BLU "----> Enter your choice : " RST);
+                    scanf("%d",&so);
+                    if(so == 1){
+                        printf(BMAG "  **** Sorting products by the price ****\n" RST);
+                        sort_by_price(p,sizepro);
+                        printf(YEL "\n | ID |\t | Name |\t | Price |\t | Stock |\n" RST);
+                        for(int i = 0;i<sizepro;i++){
+                            printf(BOLD " | %d | | %s | | %f | | %d | \n" RST,p[i].idProduct,p[i].nameOP,p[i].prix,p[i].stock);
+                        }
+                        break;
+                    }
+                    else if (so == 2){
+                        printf(BMAG "  **** Sorting products by the price ****\n" RST);
+                        sort_by_price(p,sizepro);
+                        printf(YEL "\n | ID |\t | Name |\t | Price |\t | Stock |\n" RST);
+                        for(int i = 0;i<sizepro;i++){
+                            printf(BOLD " | %d | | %s | | %f | | %d | \n" RST,p[i].idProduct,p[i].nameOP,p[i].prix,p[i].stock);
+                        }
+                        printf(BCYN "\n^^^^^^ Read from bottom to top ^^^^^^ \n" RST);
+                        break;
+                    }
+                    else{
+                        break;
+                    }
+                case 4:
+                    printf(BMAG "  ====== Product by ID ========\n\n" RST);
+                    printf(CYN " | ID |    | Name |    | Price |    | Stock |\n" RST);
+                    for(int i = 0;i<sizepro;i++){
+                        printf(BOLD " | %d | |name : %s | |prix : %f | |stock : %d | \n" RST,p[i].idProduct,p[i].nameOP,p[i].prix,p[i].stock);
+                    }
+                    printf(UCYN "\n--->> Enter the product ID you want --> : " RST);
+                    scanf("%d",&chosenpro);
+                    chosenpro -= 1;
+                    printf(YEL " | ID | |   Name   | |   Price   | |   Stock   | |   Category   | |   Description   |\n" RST);
+                    printf(BOLD " [ %d ] | %s | | %f | | %d | " RST,p[chosenpro].idProduct,p[chosenpro].nameOP,p[chosenpro].prix,p[chosenpro].stock);
+                    printf(BOLD "| %s | | %s | \n" RST,p[chosenpro].category,p[chosenpro].description);
+                    break;
+                }
+                }while (prod != 0);
+        case 4:
+            printf(MAG "*=========*  Make a purchase *=========*\n" RST);
+            for(int i = 0;i<sizepro;i++){
+                printf(YEL "\n | ID | |   Name   | |   Price   | |   Stock   | |   Category   | |   Description   |\n" RST);
+                printf(BOLD " [ %d ] | %s | | %f | | %d | "RST,p[i].idProduct,p[i].nameOP,p[i].prix,p[i].stock);
+            }
+            printf(CYN "\n>>>> Buy the product of ID --> : "RST);
+            scanf("%d",&idbuy);
+            if (p[idbuy].stock == 0){
+                printf(MAG "**** This product is out of stock !\n" RST);
                 break;
-
-            default:
+            }
+            if (c1.solde < p[idbuy].prix){
+                printf(RED ">>>>> You don't have enough money to buy this product ! <<<<<\n" RST);\
+                break;
+            }
+            else{
+                p[idbuy].stock--;
+                c1.solde -= (int)p[idbuy].prix;
+                totalearned += p[idbuy].prix;
+                totalsells++;
+                printf(GRN "  <<<< The purchase was succesfully for that product >>>>\n\n" RST);
+                printf(CYN "-=--=- The stock of the product now is => :  %d \n" RST,p[idbuy].stock);
+                printf(CYN "-=--=- And your current solde is --> : %d \n" RST,c1.solde);
                 break;
             }
             break;
-        case 4:
-            printf("*=========*  Make a purchase *=========*\n");
+        case 5:
+            printf(YEL "   ======= The statistics ========\n" RST);
+            printf(GRN "\n^^^^^ Total earned is ---> : %fMAD\n"RST,totalearned);
+            printf(GRN "^^^^^ Total sells is ---> : %d\n" RST,totalsells);
+    
             for(int i = 0;i<sizepro;i++){
-                    printf(" | ID | | Name | | Price | | Stock | | Category | | Description |\n");
-                    printf(" [ %d ] | %s | | %f | | %d | ",p[i].idProduct,p[i].nameOP,p[i].prix,p[i].stock);
-                }
-                printf(">>>> Buy the product of ID --> : ");
-                scanf("%d",&idbuy);
-                if (p[idbuy].stock == 0){
-                    printf("**** This product is out of stock !\n");
-                    break;
-                }
-                if (c1.solde < p[idbuy].prix){
-                    printf(">>>>> You don't have enough money to buy this product ! <<<<<\n");\
-                    break;
-                }
-                else{
-                    p[idbuy].stock--;
-                    c1.solde -= (int)p[idbuy].prix;
-                    totalearned += p[idbuy].prix;
-                    totalsells++;
-                    printf("  <<<< The purchase was succesfully for that product >>>>\n\n");
-                    printf("-=--=- The stock of the product now is => :  %d \n",p[idbuy].stock);
-                    printf("-=--=- And your current solde is --> : %d \n",c1.solde);
-                    break;
-                }
-                break;
-            case 5:
-                printf("   ======= The statistics ========\n");
-                printf("^^^^^ Total earned is ---> : %fMAD\n",totalearned);
-                printf("^^^^^ Total sells is ---> : %d\n",totalsells);
-                break;
-            default:
+                totpro += p[i].stock;
+            }
+            printf(GRN "^^^^^ The disponible stock ---> : %d\n" RST,totpro);
+            break;
+        default:
             break;
         }
+        
     } while (choice != 0);
-    printf (RED "\n  >>>>>>>> EXITING THE APPLICATION <<<<<<<<<\n\n" RST);
+    printf (BRED "\n  >>>>>>>> EXIT <<<<<<<<<\n\n" RST);
 }
