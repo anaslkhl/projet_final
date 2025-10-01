@@ -318,7 +318,7 @@ int main()
                         for(int i = 0;i<sizepro;i++){
                             printf(BOLD " | %d | | %s | | %f | | %d | \n" RST,p[i].idProduct,p[i].nameOP,p[i].prix,p[i].stock);
                         }
-                        printf(BCYN "\n^^^^^^ Read from bottom to top ^^^^^^ \n" RST);
+                        printf(BGRN "\n^^^^^^ Read from bottom to top ^^^^^^ \n" RST);
                         break;
                     }
                     else{
@@ -326,26 +326,28 @@ int main()
                     }
                 case 4:
                     printf(BMAG "  ====== Product by ID ========\n\n" RST);
-                    printf(CYN " | ID |    | Name |    | Price |    | Stock |\n" RST);
+                    printf(CYN " | ID |    | Name |    | Price |\n" RST);
                     for(int i = 0;i<sizepro;i++){
-                        printf(BOLD " | %d | |name : %s | |prix : %f | |stock : %d | \n" RST,p[i].idProduct,p[i].nameOP,p[i].prix,p[i].stock);
+                        printf(BOLD " |"CYN" ID "RST": %d | |"CYN"name "RST": %s | |"CYN"prix "RST": %f |\n" RST,p[i].idProduct,p[i].nameOP,p[i].prix);
                     }
-                    printf(UCYN "\n--->> Enter the product ID you want --> : " RST);
+                    printf(UCYN "\n--->> Enter the product ID you want to see all details --> : " RST);
                     scanf("%d",&chosenpro);
                     chosenpro -= 1;
                     printf(YEL " | ID | |   Name   | |   Price   | |   Stock   | |   Category   | |   Description   |\n" RST);
-                    printf(BOLD " [ %d ] | %s | | %f | | %d | " RST,p[chosenpro].idProduct,p[chosenpro].nameOP,p[chosenpro].prix,p[chosenpro].stock);
-                    printf(BOLD "| %s | | %s | \n" RST,p[chosenpro].category,p[chosenpro].description);
+                    printf(BOLD " |"CYN" ID "RST": %d | |"CYN"name "RST": %s | |"CYN"prix "RST": %f |\n" RST,p[chosenpro].idProduct,p[chosenpro].nameOP,p[chosenpro].prix,p[chosenpro].stock,p[chosenpro].category,p[chosenpro].description);
                     break;
                 }
+                    break;
                 }while (prod != 0);
+                break;
         case 4:
-            printf(MAG "*=========*  Make a purchase *=========*\n" RST);
+            printf(MAG "*=========*  Make a purchase *=========*\n\n" RST);
+            printf(YEL "\n | ID | |   Name   | |   Price   | |   Stock   |\n" RST);
             for(int i = 0;i<sizepro;i++){
-                printf(YEL "\n | ID | |   Name   | |   Price   | |   Stock   | |   Category   | |   Description   |\n" RST);
-                printf(BOLD " [ %d ] | %s | | %f | | %d | "RST,p[i].idProduct,p[i].nameOP,p[i].prix,p[i].stock);
+                
+                printf(BOLD " [ %d ] | %s | | %f | | %d | \n"RST,p[i].idProduct,p[i].nameOP,p[i].prix,p[i].stock);
             }
-            printf(CYN "\n>>>> Buy the product of ID --> : "RST);
+            printf(CYN "\n>>>> Buy the product by ID --> : "RST);
             scanf("%d",&idbuy);
             if (p[idbuy].stock == 0){
                 printf(MAG "**** This product is out of stock !\n" RST);
